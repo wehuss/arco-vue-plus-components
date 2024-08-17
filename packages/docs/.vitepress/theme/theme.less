@@ -1,0 +1,132 @@
+@import './arco.css';
+
+:root {
+  --vp-c-indigo-1: #165dff;
+  --vp-c-indigo-3: #165dff;
+  --vp-c-bg-alt: rgb(242, 243, 245);
+  --vp-button-brand-hover-bg:rgb(var(--primary-5));
+  // --vp-layout-max-width:260px;
+}
+
+.VPButton.medium {
+  border-radius: 2px !important;
+}
+
+.Layout {
+  .VPHome{
+    padding-top: 64px;
+    .VPFeature{
+      border-radius: 4px;
+      .icon{
+        border-radius: 4px;
+      }
+    }
+  }
+  .VPSidebar {
+    padding: 0;
+    width: 260px;
+    background-color: var(--vp-nav-bg-color);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid var(--color-border-2);
+    margin-top: calc(var(--vp-nav-height) + 1px);
+    .group {
+      width: 100%;
+      padding: 12px;
+      .level-0 {
+        .item {
+          // height: 40px;
+          margin: 0 0 4px;
+          padding: 0 12px;
+          color: var(--color-text-1);
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 40px;
+        }
+      }
+    }
+    .items {
+      .is-active {
+        .item {
+          background-color: var(--color-fill-1) !important;
+        }
+      }
+      .VPSidebarItem {
+        .item {
+          height: 40px;
+          padding: 0 12px;
+          &:hover {
+            background-color: var(--color-fill-1) !important;
+          }
+        }
+      }
+    }
+  }
+  .VPNav {
+    // background-color: var(--vp-nav-bg-color);
+    background-image: radial-gradient(transparent 1px, var(--color-bg-2) 2px);
+    background-size: 4px 4px;
+    backdrop-filter: saturate(50%) blur(10px);
+    // border-bottom: 1px solid #E5E6EB;
+    padding: 0 20px !important;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+    z-index: 10;
+    .wrapper{
+      padding: 0;
+    }
+    .container {
+      margin: 0;
+      width: 100%;
+      max-width: 100%;
+    }
+    .title {
+      border-bottom: none;
+      padding-left: 0 !important;
+    }
+    .content {
+      padding-right: 0 !important;
+      .content-body{
+        background-color: transparent !important;
+      }
+    }
+
+    .divider {
+      display: none;
+    }
+  }
+  .VPContent {
+    padding: 0 !important;
+    .VPDoc {
+      padding: 64px 0;
+      &>.container{
+        &>.content{
+          width: calc(100% - 260px);
+          padding-left: 260px;
+        }
+      }
+
+      .aside {
+        border-left: 1px solid var(--color-border-2);
+        width: 260px;
+        padding: 0;
+        .VPDocAsideOutline {
+          // display: flex;
+          // justify-items: center;
+          .content {
+            border-left: none;
+            // padding: 0;
+            .outline-link {
+              padding: 0 12px;
+              &:hover {
+                background-color: var(--color-fill-1) !important;
+              }
+            }
+            .active {
+              background-color: var(--color-fill-1) !important;
+              color: #165dff;
+            }
+          }
+        }
+      }
+    }
+  }
+}

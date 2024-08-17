@@ -1,0 +1,29 @@
+{
+  "name": "arco-vue-plus-components-monorepo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "build:components":"tsx ./scripts/build-components.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@arco-design/web-vue": "^2.56.0",
+    "@types/lodash": "^4.17.7",
+    "lodash": "^4.17.21",
+    "vite": "^5.4.1",
+    "vue": "^3.4.21"
+  },
+  "devDependencies": {
+    "less": "^4.2.0",
+    "fs-extra":"11.2.0 ",
+    "@types/fs-extra": "11.0.4",
+    "@vitejs/plugin-vue-jsx":"4.0.1",
+    "@vitejs/plugin-vue":"5.1.2",
+    "tsx":"4.17.0",
+    "@rollup/plugin-terser":"0.4.4"
+  }
+}

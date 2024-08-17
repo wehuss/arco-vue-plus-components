@@ -1,0 +1,10 @@
+{
+  "name": "arco-vue-plus-components",
+  "dependencies": {
+    "dayjs": "^1.11.12",
+    "vite": "^5.4.1"
+  },
+  "scripts": {
+    "build:components":""
+  }
+}
