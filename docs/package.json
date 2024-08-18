@@ -14,6 +14,6 @@
   "license": "ISC",
   "devDependencies": {
     "vitepress": "^1.3.2",
-    "arco-vue-plus-components":"workspace:*"
+    "arco-vue-plus-components":"0.0.1"
   }
 }
