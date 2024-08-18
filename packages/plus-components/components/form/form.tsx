@@ -19,7 +19,8 @@ import { DatEntryComponentProps, PlusFormItem } from './inferface'
 
 export default defineComponent({
   name: 'PlusForm',
-  extends: Form,
+  // 继承使用生成类型时报错
+  // extends: Form,
   props: {
     model: {
       type: Object,

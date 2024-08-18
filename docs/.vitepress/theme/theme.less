@@ -4,7 +4,8 @@
   --vp-c-indigo-1: #165dff;
   --vp-c-indigo-3: #165dff;
   --vp-c-bg-alt: rgb(242, 243, 245);
-  --vp-button-brand-hover-bg:rgb(var(--primary-5));
+  --vp-button-brand-hover-bg: rgb(var(--primary-5));
+  --vp-code-font-size:1em;
   // --vp-layout-max-width:260px;
 }
 
@@ -13,11 +14,11 @@
 }
 
 .Layout {
-  .VPHome{
+  .VPHome {
     padding-top: 64px;
-    .VPFeature{
+    .VPFeature {
       border-radius: 4px;
-      .icon{
+      .icon {
         border-radius: 4px;
       }
     }
@@ -70,7 +71,7 @@
     padding: 0 20px !important;
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
     z-index: 10;
-    .wrapper{
+    .wrapper {
       padding: 0;
     }
     .container {
@@ -84,7 +85,7 @@
     }
     .content {
       padding-right: 0 !important;
-      .content-body{
+      .content-body {
         background-color: transparent !important;
       }
     }
@@ -97,11 +98,15 @@
     padding: 0 !important;
     .VPDoc {
       padding: 64px 0;
-      &>.container{
-        &>.content{
+      & > .container {
+        & > .content {
           width: calc(100% - 260px);
           padding-left: 260px;
+          margin-top: 24px;
         }
+      }
+      .content-container {
+        max-width: 1000px;
       }
 
       .aside {
@@ -128,5 +133,75 @@
         }
       }
     }
+  }
+
+  .vp-doc table {
+    display: table;
+    border-collapse: separate;
+    margin: 0;
+    overflow-x: auto;
+  }
+
+  .vp-doc tr {
+    background-color: var(--vp-c-bg);
+    border-top: 0;
+    transition: background-color 0.5s;
+  }
+
+  .vp-doc tr:nth-child(2n) {
+    background-color: var(--vp-c-bg-soft);
+  }
+
+  .vp-doc th,
+  .vp-doc td {
+    border: 0;
+    padding: 0;
+  }
+
+  .vp-doc th {
+    text-align: left;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--vp-c-text-2);
+    background-color: var(--vp-c-bg-soft);
+  }
+
+  .vp-doc td {
+    font-size: 14px;
+  }
+
+  .vp-doc li + li {
+    margin-top: 0;
+  }
+
+  // .vp-doc ul {
+  //   padding-left: 0;
+  //   margin: 0 0;
+  // }
+
+  .vp-doc h2 {
+    margin: 16px 0;
+    border-top: none;
+  }
+
+  code {
+    color: #000;
+    background: none;
+    text-shadow: 0 1px white;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 1em;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
   }
 }

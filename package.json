@@ -5,7 +5,11 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "build:components":"tsx ./scripts/build-components.ts"
+    "build:components":"tsx ./scripts/build-components.ts",
+    "docgen":"tsx ./scripts/doc-gen.ts",
+    "docs:build": "pnpm --filter ./docs run docs:build",
+    "docs:dev": "pnpm --filter ./docs run docs:dev",
+    "docs:serve": "pnpm --filter ./docs run docs:serve"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +28,11 @@
     "@vitejs/plugin-vue-jsx":"4.0.1",
     "@vitejs/plugin-vue":"5.1.2",
     "tsx":"4.17.0",
-    "@rollup/plugin-terser":"0.4.4"
+    "@rollup/plugin-terser":"0.4.4",
+    "vite-plugin-dts":"4.0.3",
+    "vue-docgen-api":"4.79.2",
+    "consola":"3.2.3",
+    "shiki":"1.14.1",
+    "cheap-watch":"1.0.4"
   }
 }

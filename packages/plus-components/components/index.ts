@@ -1,3 +1,6 @@
+
+export {default} from './plus-components'
+
 export { default as PlusTable } from './table'
 export * from './table/interface'
 

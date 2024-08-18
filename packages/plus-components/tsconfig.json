@@ -9,6 +9,6 @@
     "allowJs": true,
     "isolatedModules": false,
     "esModuleInterop": true,
-    "jsx": "preserve",
+    "jsx": "preserve"
   }
 }
