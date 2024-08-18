@@ -3,9 +3,9 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  outDir: '../public',
+  // outDir: '../public',
+  base:'/arco-vue-plus-components/',
   vite:{
-    base:'/arco-vue-plus-components/',
     plugins:[vueJsx()],
     ssr:{
       noExternal: ['@arco-design/web-vue','lodash','vue','arco-vue-plus-components']
