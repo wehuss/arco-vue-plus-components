@@ -7,7 +7,7 @@ export default defineConfig({
     base:'/arco-vue-plus-components/',
     plugins:[vueJsx()],
     ssr:{
-      noExternal: ['@arco-design/web-vue','lodash','vue']
+      noExternal: ['@arco-design/web-vue','lodash','vue','arco-vue-plus-components']
     }
   },
   title: "Arco Vue Plus Components",
