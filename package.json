@@ -2,14 +2,14 @@
   "name": "arco-vue-plus-components-monorepo",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "build:components":"tsx ./scripts/build-components.ts",
     "docgen":"tsx ./scripts/doc-gen.ts",
     "docs:build": "pnpm --filter ./docs run docs:build",
     "docs:dev": "pnpm --filter ./docs run docs:dev",
-    "docs:serve": "pnpm --filter ./docs run docs:serve"
+    "docs:serve": "pnpm --filter ./docs run docs:serve",
+    "build:docs":"pnpm run docgen && pnpm run docs:build"
   },
   "keywords": [],
   "author": "",

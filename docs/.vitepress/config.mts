@@ -4,7 +4,11 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   vite:{
-    plugins:[vueJsx()]
+    base:'/arco-vue-plus-components/',
+    plugins:[vueJsx()],
+    ssr:{
+      noExternal: ['@arco-design/web-vue','lodash','vue']
+    }
   },
   title: "Arco Vue Plus Components",
   description: "arco vue的扩展组件",

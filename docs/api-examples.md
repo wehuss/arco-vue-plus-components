@@ -27,7 +27,6 @@ import { useData } from 'vitepress'
 
 <script setup>
 import { useData } from 'vitepress'
-import {Table} from 'arco-vue-plus'
 
 const { site, theme, page, frontmatter } = useData()
 </script>
