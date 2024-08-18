@@ -9,7 +9,8 @@
     "docs:build": "pnpm --filter ./docs run docs:build",
     "docs:dev": "pnpm --filter ./docs run docs:dev",
     "docs:serve": "pnpm --filter ./docs run docs:serve",
-    "build:docs":"pnpm run docgen && pnpm run docs:build"
+    "build:docs":"pnpm run docgen && pnpm run docs:build",
+    "build":"pnpm run build:components&&pnpm run build:docs"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +34,7 @@
     "vue-docgen-api":"4.79.2",
     "consola":"3.2.3",
     "shiki":"1.14.1",
-    "cheap-watch":"1.0.4"
+    "cheap-watch":"1.0.4",
+    "@vueuse/core":"11.0.0"
   }
 }

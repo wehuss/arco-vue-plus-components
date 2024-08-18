@@ -79,15 +79,15 @@ function handleCompDoc(compCode: string, compName: string, demoName: string) {
     .replace(
       /<template>([\s\S]*)<\/template>/,
       (match, p1) =>
-        `<template><ComponentDoc codeName="${codeName}" :codeFormat="codeFormat"><ClientOnly>${p1}</ClientOnly></ComponentDoc></template>`
+        `<template><ComponentDoc codeName="${codeName}" :codeFormat="codeFormat" :rawCode="rawCode"><ClientOnly>${p1}</ClientOnly></ComponentDoc></template>`
     )
     .replace(/<script\s*(setup)?\s*(lang="ts(x)?")?\s*>([\s\S]*?)<\/script>/g, (match, p1, p2, p3, p4) => {
         const startTagRegex = /<script\s*(setup)?\s*(lang="ts(x)?")?\s*>/;
-        console.log('p1',p4);
+        // console.log('p1',p4);
 
         const startTagMatch = match.match(startTagRegex);
       return `${startTagMatch![0]}
-      import {codeFormat} from './${demoName}-code';
+      import {codeFormat,rawCode} from './${demoName}-code';
      ${p4}
      </script>`
     })
@@ -160,7 +160,11 @@ async function genComponentExample(dir: string, name: string) {
         path.join(dir, `../../.temp/components/${name}/${demoName}-code.js`),
         `export const codeFormat = "${encodeURIComponent(
           code[`${name}.${demoName}-code`]
-        )}";`
+        )}";
+        export const rawCode = "${encodeURIComponent(
+          code[`${name}.${demoName}`]
+        )}";
+        `
       )
       fse.outputFileSync(
         tempCompPath,

@@ -1,4 +1,6 @@
 <script setup lang="tsx">
+      import {codeFormat,rawCode} from './basic-code';
+     
   import { h } from 'vue'
   import { Button } from '@arco-design/web-vue'
 
@@ -40,8 +42,9 @@
       total: 100,
     }
   }
-</script>
-<template>
+
+     </script>
+<template><ComponentDoc codeName="table.basic" :codeFormat="codeFormat" :rawCode="rawCode"><ClientOnly>
   <div style="height: 300px">
     <PlusTable
       autoFill
@@ -50,5 +53,5 @@
       :toolbar="toolbar"
     />
   </div>
-</template>
+</ClientOnly></ComponentDoc></template>
 <style scoped></style>

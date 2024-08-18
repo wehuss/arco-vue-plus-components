@@ -4,16 +4,25 @@
       <slot />
     </div>
     <div class="component-doc-operation">
-      <a-button
-        size="small"
-        shape="circle"
-        @click="visibleCode = !visibleCode"
-        :class="{
-          'btn-active': visibleCode,
-        }"
-      >
-        <icon-code />
-      </a-button>
+      <a-space>
+        <a-tooltip content="查看代码">
+          <a-button
+            size="small"
+            shape="circle"
+            @click="visibleCode = !visibleCode"
+            :class="{
+              'btn-active': visibleCode,
+            }"
+          >
+            <icon-code />
+          </a-button>
+        </a-tooltip>
+        <a-tooltip content="查看代码">
+          <a-button size="small" shape="circle" @click="copyCode">
+            <icon-copy />
+          </a-button>
+        </a-tooltip>
+      </a-space>
     </div>
     <div
       class="component-doc-code"
@@ -28,22 +37,32 @@
 </template>
 
 <script>
+  import { Message } from '@arco-design/web-vue'
   import { defineComponent, ref, computed } from 'vue'
+  import { useClipboard } from '@vueuse/core'
 
   export default defineComponent({
     props: {
       codeName: String,
       codeSrc: String,
       codeFormat: String,
+      rawCode: String,
     },
     setup(props) {
       const currentCode = computed(() => decodeURIComponent(props.codeFormat))
-
       const visibleCode = ref(false)
+
+      const { copy } = useClipboard()
+      const copyCode = () => {
+        copy(decodeURIComponent(props.rawCode)).then(() => {
+          Message.success('复制成功')
+        })
+      }
 
       return {
         visibleCode,
         currentCode,
+        copyCode,
       }
     },
   })
