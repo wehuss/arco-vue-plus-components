@@ -10,7 +10,8 @@ const distPath = path.resolve(packagePath, 'dist')
 
 const entryFileName='arco-vue-plus-components'
 
-const config: InlineConfig = {
+
+const config: (watch?:any)=>InlineConfig = (watch?: any) => ({
   mode: 'production',
   resolve:{
     alias:[
@@ -50,6 +51,7 @@ const config: InlineConfig = {
           plugins: [terser()],
         },
       ],
+      watch
     },
     // 开启lib模式
     lib: {
@@ -60,6 +62,6 @@ const config: InlineConfig = {
   },
   // @ts-ignore vite内部类型错误
   plugins: [vue(), vueJsx()],
-}
+})
 
 export default config;

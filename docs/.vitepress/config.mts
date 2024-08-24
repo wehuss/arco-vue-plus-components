@@ -1,5 +1,13 @@
 import { defineConfig } from 'vitepress'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import {genComponentDocWatch} from '../../scripts/doc-gen'
+import buildComponent from '../../scripts/build-components'
+import path from 'node:path';
+
+if (process.env.NODE_ENV !== 'production') {
+  genComponentDocWatch();
+  // buildComponent({});
+}
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -9,7 +17,15 @@ export default defineConfig({
     plugins:[vueJsx()],
     ssr:{
       noExternal: ['@arco-design/web-vue','lodash','vue','arco-vue-plus-components']
-    }
+    },
+    resolve:{
+      alias:[
+        {
+          find:'@',
+          replacement:path.resolve(__dirname,'./components')
+        }
+      ]
+    },
   },
   title: "Arco Vue Plus Components",
   description: "arco vue的扩展组件",
@@ -54,3 +70,4 @@ export default defineConfig({
     ]
   }
 })
+

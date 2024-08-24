@@ -10,7 +10,8 @@
     "docs:dev": "pnpm --filter ./docs run docs:dev",
     "docs:serve": "pnpm --filter ./docs run docs:serve",
     "build:docs": "pnpm run docgen && pnpm run docs:build",
-    "build": "pnpm run build:components&&pnpm run build:docs"
+    "build": "pnpm run build:components&&pnpm run build:docs",
+    "start":"tsx ./scripts/start.ts"
   },
   "keywords": [],
   "author": "",

@@ -4,9 +4,9 @@ import { build } from 'vite'
 import buildConfig from './configs/vite.prod'
 import buildUmdConfig from './configs/vite.prod.umd'
 
-async function run(watch?: any) {
+async function run() {
+  // const packagePath = path.resolve(__dirname, '../packages/plus-components')
   const packagePath = path.resolve(process.cwd(), 'packages/plus-components')
-  // const packagePath = path.resolve(process.cwd(), 'packages/plus-components')
   const esPath = path.resolve(packagePath, 'es')
   const libPath = path.resolve(packagePath, 'lib')
   const distPath = path.resolve(packagePath, 'dist')
@@ -14,8 +14,8 @@ async function run(watch?: any) {
   fs.emptyDir(libPath)
   fs.emptyDir(distPath)
 
-  await build(buildConfig(watch))
-  await build(buildUmdConfig())
+  build(buildConfig({}))
+  // build(buildUmdConfig({}))
 }
 
 run()

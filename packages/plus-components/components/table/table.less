@@ -1,4 +1,4 @@
-@import '/@arco-design/web-vue/es/style/mixins/index.less';
+@import '@arco-design/web-vue/es/style/mixins/index.less';
 
 @table-prefix-cls: ~'@{prefix}-plus-table';
 @table-cls-container: ~'@{table-prefix-cls}-container';
@@ -178,8 +178,8 @@
     overflow: hidden;
     display: flex;
 
-    .@{card-cls}-body {
-      flex: 1;
+    &> .@{card-cls}-body {
+      flex: 1; 
       height: 100%;
       overflow: hidden;
       box-sizing: border-box;

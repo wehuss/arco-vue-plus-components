@@ -27,7 +27,8 @@ import cheapWatch from 'cheap-watch'
 // import { SCRIPT_TEMPLATE, DEMO_ENTRY_FILE } from './constants.js';
 
 function getProjectRootDir() {
-  return process.cwd()
+  // return process.cwd()
+  return path.resolve(__dirname, '../')
 }
 // docs demo
 export const DEMO_ENTRY_FILE = `
@@ -52,6 +53,7 @@ const CODE_PATH = path.join(
   rootDir,
   './docs/.vitepress/theme/components/demoCode.json'
 )
+console.log('rootDir',rootDir);
 const componentDocSrc = path.join(rootDir, './docs/.vitepress/components')
 
 function getDemoCode() {
@@ -138,7 +140,13 @@ async function genComponentExample(dir: string, name: string) {
   }
   const tempCode: Record<string, any> = {}
   for (const filename of demos) {
+
     const fullPath = path.join(dir, filename)
+    // console.log('fullPath',fullPath);
+    if(fse.statSync(fullPath).isFile()&& path.extname(fullPath) === '.json'){
+      // 将json文件复制到temp目录
+      fse.copyFileSync(fullPath,path.join(dir,`../../.temp/components/${name}/${filename}`));
+    }
     if (fse.statSync(fullPath).isFile() && path.extname(fullPath) === '.vue') {
       const demoContent = []
       const demoName = path.basename(fullPath, '.vue')

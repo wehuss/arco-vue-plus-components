@@ -12,7 +12,7 @@ const esPath = path.resolve(packagePath, 'es')
 const libPath = path.resolve(packagePath, 'lib')
 const inputPath = path.resolve(packagePath,'components/index.ts')
 
-const config: InlineConfig = {
+const config: (watch?:any)=>InlineConfig = (watch?: any) => ({
   mode: 'production',
   resolve:{
     alias:[
@@ -52,6 +52,7 @@ const config: InlineConfig = {
       entry: inputPath,
       formats: ['es', 'cjs'],
     },
+    watch
   },
   // @ts-ignore vite内部类型错误
   plugins: [external(), vue(), vueJsx(), vueExportHelper(),    dts({
@@ -65,6 +66,6 @@ const config: InlineConfig = {
     //   isolatedModules:false,
     // }
   }),],
-};
+})
 
 export default config;
