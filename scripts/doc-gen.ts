@@ -27,8 +27,8 @@ import cheapWatch from 'cheap-watch'
 // import { SCRIPT_TEMPLATE, DEMO_ENTRY_FILE } from './constants.js';
 
 function getProjectRootDir() {
-  // return process.cwd()
-  return path.resolve(__dirname, '../')
+  return process.cwd()
+  // return path.resolve(__dirname, '../')
 }
 // docs demo
 export const DEMO_ENTRY_FILE = `
@@ -53,7 +53,7 @@ const CODE_PATH = path.join(
   rootDir,
   './docs/.vitepress/theme/components/demoCode.json'
 )
-console.log('rootDir',rootDir);
+
 const componentDocSrc = path.join(rootDir, './docs/.vitepress/components')
 
 function getDemoCode() {

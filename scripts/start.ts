@@ -2,7 +2,7 @@ import path from 'path'
 import fs from 'fs-extra'
 import { build } from 'vite'
 import buildConfig from './configs/vite.prod'
-import buildUmdConfig from './configs/vite.prod.umd'
+import { genComponentDocWatch } from './doc-gen'
 
 async function run() {
   // const packagePath = path.resolve(__dirname, '../packages/plus-components')
@@ -15,6 +15,7 @@ async function run() {
   fs.emptyDir(distPath)
 
   build(buildConfig({}))
+  genComponentDocWatch()
   // build(buildUmdConfig({}))
 }
 
