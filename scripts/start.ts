@@ -6,15 +6,15 @@ import { genComponentDocWatch } from './doc-gen'
 
 async function run() {
   // const packagePath = path.resolve(__dirname, '../packages/plus-components')
-  const packagePath = path.resolve(process.cwd(), 'packages/plus-components')
-  const esPath = path.resolve(packagePath, 'es')
-  const libPath = path.resolve(packagePath, 'lib')
-  const distPath = path.resolve(packagePath, 'dist')
-  fs.emptyDir(esPath)
-  fs.emptyDir(libPath)
-  fs.emptyDir(distPath)
+  // const packagePath = path.resolve(process.cwd(), 'packages/plus-components')
+  // const esPath = path.resolve(packagePath, 'es')
+  // const libPath = path.resolve(packagePath, 'lib')
+  // const distPath = path.resolve(packagePath, 'dist')
+  // fs.emptyDir(esPath)
+  // fs.emptyDir(libPath)
+  // fs.emptyDir(distPath)
 
-  build(buildConfig({}))
+  // build(buildConfig({}))
   genComponentDocWatch()
   // build(buildUmdConfig({}))
 }

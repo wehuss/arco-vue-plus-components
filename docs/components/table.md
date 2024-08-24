@@ -17,8 +17,10 @@ outline: deep
 
 
 通过传入 `tableContentRender` 属性，可以自定义表格内容的渲染方式。
+::: Raw
 ::: raw
 <CustomContent />
+:::
 :::
 
 **Input**

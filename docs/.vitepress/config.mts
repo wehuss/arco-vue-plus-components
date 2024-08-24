@@ -1,8 +1,7 @@
-import { defineConfig } from 'vitepress'
+import { defineConfig, postcssIsolateStyles } from 'vitepress'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 // import { genComponentDocWatch } from '../../scripts/doc-gen'
 // import path from 'node:path'
-
 
 // if (process.env.NODE_ENV !== 'production') {
 //   console.log('process.env.NODE_ENV', process.env.NODE_ENV);
@@ -11,9 +10,16 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  // outDir: '../public',
-  // base:'/arco-vue-plus-components/',
   vite: {
+    css: {
+      postcss: {
+        plugins: [
+          postcssIsolateStyles({
+            includeFiles: [/vp-doc\.css/,/base\.css/,],
+          }),
+        ],
+      },
+    },
     plugins: [vueJsx()],
     ssr: {
       noExternal: [
@@ -63,7 +69,10 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' },
+      {
+        icon: 'github',
+        link: 'https://github.com/wehuss/arco-vue-plus-components',
+      },
     ],
   },
 })

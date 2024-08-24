@@ -3,9 +3,9 @@
   import data from './lol.json'
   const heroList = data.hero
   const query = async (params) => {
-    let list=heroList
-    if(params.name){
-      list=heroList.filter(hero=>hero.keywords.includes(params.name))
+    let list = heroList
+    if (params.name) {
+      list = heroList.filter((hero) => hero.keywords.includes(params.name))
     }
     const { current, pageSize } = params
     const data = await new Promise((resolve) => {
@@ -20,23 +20,26 @@
   }
   const tableContentRender = (record: any[]) => {
     return (
-      <div style='display: grid;grid-template-columns: repeat(6,1fr);gap: 16px;padding:16px'>
+      <a-grid  class="hero-list" cols={6} colGap={16} rowGap={16}>
         {record.map((hero) => (
-          <a-card
-            v-slots={{
-              cover: () => (
-                <a-image
-                  src={`https://game.gtimg.cn/images/lol/act/img/skinloading/${hero.instance_id}.jpg`}
-                  style='height: 200px'
-                />
-              ),
-            }}
-          >
-            <div>{hero.name}</div>
-            {hero.title}
-          </a-card>
+          <a-grid-item  class="hero">
+            <a-card
+              v-slots={{
+                cover: () => (
+                  <a-image
+                    src={`https://game.gtimg.cn/images/lol/act/img/skinloading/${hero.instance_id}.jpg`}
+                    style='height: 200px'
+                    width='100%'
+                  />
+                ),
+              }}
+            >
+              <div>{hero.name}</div>
+              {hero.title}
+            </a-card>
+          </a-grid-item>
         ))}
-      </div>
+      </a-grid>
     )
   }
 </script>
@@ -49,10 +52,10 @@
       :tableContentRender="tableContentRender"
       :columns="[
         {
-          dataIndex:'name',
-          title:'英雄名称',
-          form:true
-        }
+          dataIndex: 'name',
+          title: '英雄名称',
+          form: true,
+        },
       ]"
       :showHeader="false"
       lightSearch
@@ -62,5 +65,3 @@
     ></div>
   </div>
 </template>
-
-<style scoped></style>
