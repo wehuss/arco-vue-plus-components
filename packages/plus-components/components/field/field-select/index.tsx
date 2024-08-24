@@ -1,7 +1,7 @@
 import { computed, defineComponent } from 'vue'
 import { Select, SelectOptionData } from '@arco-design/web-vue'
 import commonProps from '../common-props'
-import { fieldParsingText } from '../../_utils/field-parsing-text'
+import { fieldParsingText } from '@/components/_utils/field-parsing-text'
 import { FieldValueEnumType, SchemaValueEnumMap } from '../inferface'
 
 function getType(obj: any) {
@@ -72,15 +72,6 @@ export const plusFieldParsingValueEnumToArray = (
 export default defineComponent({
   props: commonProps,
   setup(props) {
-    if (props.mode === 'read') {
-      return () =>
-        fieldParsingText(
-          props.modelValue,
-          // @ts-expect-error
-          props.valueEnum,
-          props.rowIndex
-        )
-    }
     const options = computed(() =>
       plusFieldParsingValueEnumToArray(ObjToMap(props.valueEnum)).map(
         ({ value, text, ...rest }) => ({
@@ -92,6 +83,21 @@ export default defineComponent({
       )
     )
 
-    return () => <Select options={options.value} {...props} />
+    return () => {
+      if (props.mode === 'read') {
+        return (
+          <div>
+            {fieldParsingText(
+              props.modelValue,
+              // @ts-expect-error
+              props.valueEnum,
+              props.rowIndex
+            )}
+          </div>
+        )
+      }
+
+      return <Select options={options.value} {...props} />
+    }
   },
 })

@@ -16,6 +16,7 @@ export type PaginationPropsWithEvent = {
   'onPageSizeChange'?: ((pageSize: number) => any) | undefined
   'onUpdate:pageSize'?: ((pageSize: number) => any) | undefined
 } & PaginationProps
+// export type PaginationPropsWithEvent = PaginationProps
 
 export type ColumnRenderInterface<T = TableData> = {
   column: PlusColumn
@@ -27,12 +28,12 @@ export type ColumnRenderInterface<T = TableData> = {
 }
 
 export type PlusColumnForm = PlusFormItem & {
-  searchForm?: PlusColumnForm
-  addForm?: PlusColumnForm
-  updateForm?: PlusColumnForm
+  searchForm?: PlusColumnForm | false | boolean
+  createForm?: PlusColumnForm | false | boolean
+  updateForm?: PlusColumnForm | false | boolean
 }
 
-export type PlusColumn<T = TableData> = Omit<
+export type PlusColumn<T = any> = Omit<
   TableColumnData,
   'filterable' | 'dataIndex' | 'render' | 'children'
 > & {
@@ -53,6 +54,7 @@ export type PlusColumn<T = TableData> = Omit<
   render?: (data: ColumnRenderInterface<T>) => VNodeChild
   // eslint-disable-next-line @typescript-eslint/ban-types
   dataIndex?: keyof T | (string & {})
+  disable?: boolean
 }
 
 export type QueryParams = {
@@ -194,4 +196,38 @@ export type ToolbarProps = {
   rightPanelStart?: () => VNode
   rightPanelEnd?: () => VNode
   // optionsRender?: ToolbarRenderProps<T>['optionsRender'];
+}
+
+export type QuerySearchProps = {
+  trigger?: 'change' | 'submit'
+  searchText: string
+  resetText: string
+}
+
+export type ColumnsState = {
+  show?: boolean
+  fixed?: 'right' | 'left' | undefined
+  order?: number
+  disable?:
+    | boolean
+    | {
+        checkbox: boolean
+      }
+}
+
+export type ColumnsStateType = {
+  /**
+   * 持久化的类型，支持 localStorage 和 sessionStorage
+   *
+   * @param localStorage 设置在关闭浏览器后也是存在的
+   * @param sessionStorage 关闭浏览器后会丢失
+   */
+  persistenceType?: 'localStorage' | 'sessionStorage'
+  /** 持久化的key，用于存储到 storage 中 */
+  persistenceKey?: string
+  /** ColumnsState 的值，columnsStateMap将会废弃 */
+  defaultValue?: Record<string, ColumnsState>
+  /** ColumnsState 的值，columnsStateMap将会废弃 */
+  value?: Record<string, ColumnsState>
+  onChange?: (map: Record<string, ColumnsState>) => void
 }

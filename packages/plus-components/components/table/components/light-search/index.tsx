@@ -4,22 +4,21 @@ import {
   createVNode,
   defineComponent,
   inject,
-  onMounted,
   PropType,
   ref,
   watch,
-  watchEffect,
 } from 'vue'
-import PlusForm from '../../../form'
+import PlusForm from '@/components/form/form'
+import { merge } from 'lodash'
 import { TableContext, tableInjectionKey } from '../../context'
 import { getFormItemPropsFromColumns } from '../../utils'
 
 export default defineComponent({
   props: {
-    onFormSubmit: {
+    onSubmit: {
       type: Function as PropType<(form: Record<string, any>) => void>,
     },
-    onFormReset: {
+    onReset: {
       type: Function as PropType<() => void>,
     },
   },
@@ -27,18 +26,33 @@ export default defineComponent({
     const context = inject<TableContext>(tableInjectionKey)
     const prefixCls = getPrefixCls('plus-table')
 
-    const formConfig = computed(() =>
-      getFormItemPropsFromColumns(Object.values(context?.columns ?? {}))
-    )
+    const formConfig = computed(() => {
+      const config = getFormItemPropsFromColumns(
+        Object.values(context?.columnsFlatMap ?? {}),
+        'searchForm'
+      )
+      return {
+        ...config,
+        formItems: config.formItems.map((item) => ({
+          ...item,
+          // 查询表单暂不支持校验
+          rules: [],
+          fieldProps: merge(
+            { ...item.fieldProps },
+            {
+              allowClear: true,
+            }
+          ),
+        })),
+      }
+    })
+
     const formData = ref<Record<string, any>>(formConfig.value.defaultFormData)
     const onSubmit = (val: any) => {
       context?.action.setPageInfo?.({ current: 1 })
-      props.onFormSubmit?.(val)
+      props.onSubmit?.(val)
     }
-    // watchEffect(() => {
-    //   // console.log('watchEffect', watchEffect)
-    //   onSubmit(formData.value)
-    // })
+
     watch(
       () => formData.value,
       (newVal) => {
@@ -46,12 +60,16 @@ export default defineComponent({
       },
       {
         deep: true,
+        immediate: true,
       }
     )
 
     return () => (
       <PlusForm
-        onFormSubmit={onSubmit}
+        style={{
+          width: 'auto',
+        }}
+        onSubmitSuccess={onSubmit}
         v-model={formData.value}
         class={[`${prefixCls}-light-filter`]}
         layout="inline"

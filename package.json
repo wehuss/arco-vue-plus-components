@@ -4,13 +4,13 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "build:components":"tsx ./scripts/build-components.ts",
-    "docgen":"tsx ./scripts/doc-gen.ts",
+    "build:components": "tsx ./scripts/build-components.ts",
+    "docgen": "tsx ./scripts/doc-gen.ts",
     "docs:build": "pnpm --filter ./docs run docs:build",
     "docs:dev": "pnpm --filter ./docs run docs:dev",
     "docs:serve": "pnpm --filter ./docs run docs:serve",
-    "build:docs":"pnpm run docgen && pnpm run docs:build",
-    "build":"pnpm run build:components&&pnpm run build:docs"
+    "build:docs": "pnpm run docgen && pnpm run docs:build",
+    "build": "pnpm run build:components&&pnpm run build:docs"
   },
   "keywords": [],
   "author": "",
@@ -23,18 +23,19 @@
     "vue": "^3.4.21"
   },
   "devDependencies": {
-    "less": "^4.2.0",
-    "fs-extra":"11.2.0 ",
+    "@rollup/plugin-terser": "0.4.4",
     "@types/fs-extra": "11.0.4",
-    "@vitejs/plugin-vue-jsx":"4.0.1",
-    "@vitejs/plugin-vue":"5.1.2",
-    "tsx":"4.17.0",
-    "@rollup/plugin-terser":"0.4.4",
-    "vite-plugin-dts":"4.0.3",
-    "vue-docgen-api":"4.79.2",
-    "consola":"3.2.3",
-    "shiki":"1.14.1",
-    "cheap-watch":"1.0.4",
-    "@vueuse/core":"11.0.0"
+    "@vitejs/plugin-vue": "5.1.2",
+    "@vitejs/plugin-vue-jsx": "4.0.1",
+    "@vueuse/core": "11.0.0",
+    "cheap-watch": "1.0.4",
+    "consola": "3.2.3",
+    "fs-extra": "11.2.0 ",
+    "less": "^4.2.0",
+    "shiki": "1.14.1",
+    "tsx": "4.17.0",
+    "vite-plugin-dts": "4.0.3",
+    "vue-docgen-api": "4.79.2",
+    "scroll-into-view-if-needed": "^3.1.0"
   }
 }

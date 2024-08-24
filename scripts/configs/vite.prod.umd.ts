@@ -12,6 +12,14 @@ const entryFileName='arco-vue-plus-components'
 
 const config: InlineConfig = {
   mode: 'production',
+  resolve:{
+    alias:[
+      {
+        find:'@',
+        replacement:packagePath
+      }
+    ]
+  },
   build: {
     target: 'modules',
     outDir: distPath,

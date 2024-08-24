@@ -3,7 +3,6 @@ import { getPrefixCls } from '@arco-design/web-vue/es/_utils/global-config'
 import { Component, defineComponent, inject, PropType, VNode } from 'vue'
 import { Button, Tooltip } from '@arco-design/web-vue'
 import Density from './density'
-import ColumnSetting from './column-setting'
 import { TableContext, tableInjectionKey } from '../../context'
 
 export type SettingOptionType = {
@@ -74,10 +73,6 @@ export default defineComponent({
       density: {
         text: '表格密度',
         render: () => <Density />,
-      },
-      setting: {
-        text: '列设置',
-        render: () => <ColumnSetting />,
       },
     }
 

@@ -1,5 +1,5 @@
 import { UnwrapRef } from 'vue'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, merge } from 'lodash'
 import { setValueByPath } from '@arco-design/web-vue/es/_utils/get-value-by-path'
 import {
   PaginationPropsWithEvent,
@@ -66,8 +66,12 @@ export const genColumnKey = (
   return `${index}`
 }
 
-export const getFormItemPropsFromColumns = (columns: PlusColumn[]) => {
+export const getFormItemPropsFromColumns = (
+  columns: PlusColumn[],
+  formKey: 'searchForm' | 'updateForm' | 'createForm'
+) => {
   const defaultFormData: Record<string, any> = {}
+
   // @ts-expect-error
   const formItems: PlusFormItem[] =
     columns
@@ -78,7 +82,7 @@ export const getFormItemPropsFromColumns = (columns: PlusColumn[]) => {
             ? 'text'
             : (item?.valueType as 'text')
         const { valueEnum } = item
-        const { form } = item
+        let { form } = item
         if (!form) return null
         if (form === true)
           return {
@@ -87,8 +91,19 @@ export const getFormItemPropsFromColumns = (columns: PlusColumn[]) => {
             valueType,
             valueEnum,
           }
+
+        // 准备合并的form
+        const mergeProps = form[formKey]
+        if (form[formKey] === false) return null
+        if (mergeProps && mergeProps !== true) {
+          form = merge(cloneDeep(form), mergeProps)
+          // 避免将render设置为undefined时不覆盖默认render
+          if ('render' in mergeProps) {
+            form.render = mergeProps.render
+          }
+        }
+
         if (form?.defaultValue) {
-          // formData.value[item.dataIndex as string] = cloneDeep(form.defaultValue)
           setValueByPath(
             defaultFormData,
             item.dataIndex as string,
@@ -96,17 +111,17 @@ export const getFormItemPropsFromColumns = (columns: PlusColumn[]) => {
           )
         }
         const formItemProps = {
+          valueType,
+          valueEnum,
           ...form,
           label: form?.label ?? item.title,
           field: form?.field ?? (item.dataIndex as string),
-          valueType,
-          valueEnum,
         }
         return formItemProps
       })
       .filter((item) => item)
       .sort((a, b) => (b?.order ?? 0) - (a?.order ?? 0)) || []
-  // console.log('formItems', formItems)
+
   return {
     formItems,
     defaultFormData,

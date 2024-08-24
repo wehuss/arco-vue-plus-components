@@ -83,6 +83,7 @@ export type FieldValueTypeWithFieldProps = {
   progress: ProgressInstance['$props']
   /** 百分比输入框 */
   percent: InputNumberInstance['$props']
+  number: InputNumberInstance['$props']
   /** 数字输入框 */
   digit: InputNumberInstance['$props']
   /** 数字范围输入框 */
@@ -138,7 +139,8 @@ export type SchemaValueEnumType = {
   /** @name 显示的文本 */
   text: string
   /** @name 状态 */
-  status?: BadgeStatus
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  status?: BadgeStatus | (string & {})
   /** @name 自定义的颜色 */
   color?: string
   /** @name 是否禁用 */

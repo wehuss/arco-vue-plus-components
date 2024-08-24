@@ -12,6 +12,8 @@ import {
   watch,
   Fragment,
   onRenderTracked,
+  VNode,
+  onRenderTriggered,
 } from 'vue'
 import {
   Card,
@@ -25,12 +27,13 @@ import {
 } from '@arco-design/web-vue'
 import { useSize } from '@arco-design/web-vue/es/_hooks/use-size'
 import { getPrefixCls } from '@arco-design/web-vue/es/_utils/global-config'
-import { omit } from 'lodash'
+import { omit, pick } from 'lodash'
 import { Filters, Sorter } from '@arco-design/web-vue/es/table/interface'
 import { configProviderInjectionKey } from '@arco-design/web-vue/es/config-provider/context'
 import useListeners from '../_hooks/listeners'
 import { useMergedState } from './hooks/use-merged-state'
 import {
+  ColumnsStateType,
   PageInfo,
   PaginationPropsWithEvent,
   PlusColumn,
@@ -39,15 +42,20 @@ import {
   ToolbarProps,
 } from './interface'
 import commonProps from './common-props'
-import './style.less'
+import './table.less'
 import Toolbar from './components/toolbar'
 import QuerySearch from './components/query-search'
 import { tableInjectionKey } from './context'
 import { useFetchData } from './hooks/use-fetch-data'
-import { mergePagination } from './utils'
+import { genColumnKey, mergePagination } from './utils'
 import { genPlusColumnToColumn } from './utils/gen-plus-column-to-column'
 import LightSearch from './components/light-search'
 import commonEmits from './common-emits'
+import Tbody from './components/tbody'
+import useColumnsState from './hooks/use-columns-state'
+import { columnSort } from './utils/columnSort'
+import Tr from './components/tr/index.vue'
+import Td from './components/td/index.vue'
 
 export default defineComponent({
   name: 'PlusTable',
@@ -78,15 +86,9 @@ export default defineComponent({
         remove: () => void
       }>,
     },
-    /**
-     * 是否自动撑满父元素
-     */
     autoFill: {
       type: Boolean,
     },
-    /**
-     * 是否显示边框
-     */
     bordered: {
       type: Boolean,
       default: true,
@@ -116,6 +118,15 @@ export default defineComponent({
     },
     params: {
       type: Object as PropType<Record<string, any>>,
+      default: () => ({}),
+    },
+    tableContentRender: {
+      type: Function as PropType<
+        (data: TableData[], columns: PlusColumn[]) => VNode
+      >,
+    },
+    columnsState: {
+      type: Object as PropType<ColumnsStateType>,
       default: () => ({}),
     },
   },
@@ -152,17 +163,17 @@ export default defineComponent({
     const columnsFlatMap = computed(() => {
       const _columnMap: Record<string, PlusColumn> = {}
 
-      const loopColumns = (data: any[]) => {
+      const loopFilter = (data: any[]) => {
         for (let i = 0; i < data.length; i += 1) {
           const _column = data[i]
           if (_column.children) {
-            loopColumns(_column.children)
+            loopFilter(_column.children)
           } else {
             _columnMap[_column.dataIndex] = _column
           }
         }
       }
-      loopColumns(props.columns || [])
+      loopFilter(props.columns || [])
 
       return _columnMap
     })
@@ -291,22 +302,50 @@ export default defineComponent({
       return mergePagination<any[]>(newPropsPagination, pageConfig)
     })
 
-    const onFormSubmit = (values: Record<string, any>) => {
+    const onSubmit = (values: Record<string, any>) => {
       formSearch.value = { ...values }
     }
 
-    const onFormReset = () => {
+    const onReset = () => {
       formSearch.value = {}
     }
 
-    const columns = computed(() => {
+    const { columnsMap, setColumnsMap } = useColumnsState(
+      reactive(props.columnsState),
+      reactive(props.columns)
+    )
+
+    const tableColumns = computed(() => {
       return genPlusColumnToColumn({
-        // @ts-expect-error
         columns: props.columns,
         columnEmptyText: props.columnEmptyText,
         rowKey: props.rowKey,
         action,
-      })
+        columnsMap: columnsMap.value,
+      }).sort(columnSort(columnsMap.value))
+    })
+
+    const columns = computed(() => {
+      const loopFilter = (column: any[]): any[] => {
+        return column
+          .map((item) => {
+            // 删掉不应该显示的
+            const columnKey = item.key ?? item.dataIndex
+            const config = columnsMap.value[columnKey]
+            if (config && config.show === false) {
+              return false
+            }
+            if (item.children) {
+              return {
+                ...item,
+                children: loopFilter(item.children),
+              }
+            }
+            return item
+          })
+          .filter(Boolean)
+      }
+      return loopFilter(tableColumns.value)
     })
     const computedColumns = computed(() => {
       return columns.value?.map(
@@ -314,8 +353,30 @@ export default defineComponent({
       )
     })
 
+    const sortKeyColumns = ref<string[]>([])
+    const setSortKeyColumns = (keys: string[]) => {
+      sortKeyColumns.value = keys
+    }
+    watch(
+      tableColumns,
+      () => {
+        if (tableColumns.value.length > 0) {
+          const columnKeys = tableColumns.value.map((item) =>
+            genColumnKey(item.dataIndex, item.index)
+          )
+          setSortKeyColumns(columnKeys)
+        }
+      },
+      {
+        immediate: true,
+      }
+    )
+
     const tableContext = reactive({
+      // 实际显示的columns
       columns,
+      // 所有的columns
+      tableColumns,
       slots,
       columnEmptyText,
       size: mergedSize,
@@ -325,6 +386,11 @@ export default defineComponent({
       action,
       pagination,
       columnsFlatMap,
+      columnsMap,
+      setColumnsMap,
+      dataSource,
+      sortKeyColumns,
+      setSortKeyColumns,
     })
 
     // @ts-expect-error
@@ -337,6 +403,36 @@ export default defineComponent({
       action.reload()
     })
 
+    const tableSlots = {
+      ...slots,
+      tbody: props.tableContentRender
+        ? () => (
+            <Tbody
+              render={() =>
+                props.tableContentRender?.(
+                  dataSource.value,
+                  columns.value as PlusColumn[]
+                )
+              }
+            />
+          )
+        : slots.tobdy,
+      tr: ({ record, rowIndex }: any) => (
+        <Tr
+          record={record}
+          rowIndex={rowIndex}
+          columns={computedColumns.value}
+        />
+      ),
+      td: ({ record, column, rowIndex }: any) => (
+        <Td record={record} rowIndex={rowIndex} column={column} />
+      ),
+    }
+
+    const tableProps = computed(() => {
+      return pick(props, Object.keys(commonProps))
+    })
+
     return () => (
       <div
         class={[
@@ -344,15 +440,14 @@ export default defineComponent({
           `${prefixCls}-container`,
           {
             [`${prefixCls}-fill`]: autoFill.value,
+            // 是否拥有tbody渲染
+            [`${prefixCls}-has-tbody-render`]: !!props.tableContentRender,
           },
         ]}
       >
         <ConfigProvider size={mergedSize.value}>
           {props.search && !props.lightSearch && (
-            <QuerySearch
-              onFormSubmit={onFormSubmit}
-              onFormReset={onFormReset}
-            />
+            <QuerySearch onSubmit={onSubmit} onReset={onReset} />
           )}
           <Card
             class={[`${prefixCls}-body`]}
@@ -367,10 +462,7 @@ export default defineComponent({
                     ? () => (
                         <Fragment>
                           {(toolbar.value as any)?.leftPanelStart?.()}
-                          <LightSearch
-                            onFormSubmit={onFormSubmit}
-                            onFormReset={onFormReset}
-                          />
+                          <LightSearch onSubmit={onSubmit} onReset={onReset} />
                         </Fragment>
                       )
                     : toolbar.value?.leftPanelStart
@@ -379,7 +471,7 @@ export default defineComponent({
             )}
             <div class={[`${prefixCls}-element`]}>
               <Table
-                {...props}
+                {...tableProps.value}
                 {...listeners.value}
                 size={tableSize.value}
                 columns={computedColumns.value}
@@ -388,6 +480,7 @@ export default defineComponent({
                 data={dataSource.value}
                 loading={action.loading.value}
                 pagination={pagination.value}
+                v-slots={tableSlots}
               />
             </div>
           </Card>

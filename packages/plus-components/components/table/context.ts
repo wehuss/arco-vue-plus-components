@@ -1,12 +1,14 @@
 import { InjectionKey, Slots } from 'vue'
 import { Size } from '@arco-design/web-vue'
 import {
+  ColumnsState,
   PaginationPropsWithEvent,
   PlusColumn,
   UseFetchDataAction,
 } from './interface'
 
 export interface TableContext {
+  tableColumns: PlusColumn[]
   columns: PlusColumn[]
   columnEmptyText: string
   slots: Slots
@@ -21,7 +23,11 @@ export interface TableContext {
   /**
    * 平铺的columns
    */
-  columnsFlatMap: PlusColumn[]
+  columnsFlatMap: Record<string, PlusColumn>
+  columnsMap: Record<string, ColumnsState>
+  setColumnsMap: (columnsMap: Record<string, ColumnsState>) => void
+  sortKeyColumns: string[]
+  setSortKeyColumns: (sortKeyColumns: string[]) => void
 }
 
 export const tableInjectionKey: InjectionKey<TableContext> = Symbol('PlusTable')

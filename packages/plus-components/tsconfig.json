@@ -9,6 +9,12 @@
     "allowJs": true,
     "isolatedModules": false,
     "esModuleInterop": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "paths": {
+      "@/*": ["./*"],
+      "scroll-into-view-if-needed":[
+        "../../node_modules/scroll-into-view-if-needed/"
+      ]
+    },
   }
 }

@@ -14,6 +14,14 @@ const inputPath = path.resolve(packagePath,'components/index.ts')
 
 const config: InlineConfig = {
   mode: 'production',
+  resolve:{
+    alias:[
+      {
+        find:'@',
+        replacement:packagePath
+      }
+    ]
+  },
   build: {
     target: 'modules',
     outDir: esPath,
@@ -50,11 +58,12 @@ const config: InlineConfig = {
     root:packagePath,
     outDir: ['es', 'lib'], // 指定.d.ts文件的输出目录
     // tsconfigPath: '../../tsconfig.json', // 指定tsconfig.json路径
-    compilerOptions:{
-      jsx: 1,
-      skipLibCheck: true,
-      isolatedModules:false,
-    }
+    tsconfigPath: path.resolve(packagePath, 'tsconfig.json'), // 指定tsconfig.json路径
+    // compilerOptions:{
+    //   jsx: 1,
+    //   skipLibCheck: true,
+    //   isolatedModules:false,
+    // }
   }),],
 };
 

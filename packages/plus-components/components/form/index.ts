@@ -1,17 +1,16 @@
-import {type App } from 'vue'
+import { type App } from 'vue'
 import _PlusField from './form'
+import ModalForm from './components/modal-form'
+import { genPlusFormItem } from './utils'
 
-const PlusField=Object.assign(_PlusField,{
+const PlusField = Object.assign(_PlusField, {
   install(app: App) {
     app.component(_PlusField.name as string, _PlusField)
-  }
+  },
 })
-// PlusField.install = (app: App) =>
-//   app.component(PlusField.name as string, PlusField)
 
-// type PlusFieldInstance = InstanceType<typeof plusField>
+export { ModalForm, genPlusFormItem }
 
 export type * from './inferface'
-
 
 export default PlusField

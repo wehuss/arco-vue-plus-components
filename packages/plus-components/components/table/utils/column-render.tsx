@@ -56,7 +56,6 @@ export function columnRender({
   action,
 }: ColumnRenderInterface): any {
   // const { action } = action
-  // console.log('r')
 
   // const { renderText = (val: any) => val } = column
   const text = getValueByPath(record, column.dataIndex as string)

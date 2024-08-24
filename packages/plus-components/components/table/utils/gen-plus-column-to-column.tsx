@@ -3,7 +3,7 @@
   TableData,
   TableInstance,
 } from '@arco-design/web-vue/es/table'
-import { PlusColumn, UseFetchDataAction } from '../interface'
+import { ColumnsState, PlusColumn, UseFetchDataAction } from '../interface'
 import { genColumnKey } from '.'
 import { columnRender } from './column-render'
 
@@ -11,6 +11,7 @@ type ColumnToColumnParams = {
   columns: PlusColumn[]
   columnEmptyText: string
   action: UseFetchDataAction
+  columnsMap: Record<string, ColumnsState>
 } & Pick<TableInstance['$props'], 'rowKey'>
 
 export const omitUndefinedAndEmptyArr = <T extends Record<string, any>>(
@@ -47,7 +48,7 @@ export function genPlusColumnToColumn(
     // type,
     // editableUtils,
     // marginSM,
-    rowKey = 'id',
+    columnsMap,
     // childrenColumnName = 'children',
   } = params
 
@@ -67,17 +68,15 @@ export function genPlusColumnToColumn(
         [parents?.key, columnsIndex].filter(Boolean).join('-')
       )
       // 这些都没有，说明是普通的表格不需要 pro 管理
-      const noNeedPro = !valueEnum && !valueType && !children
-      if (noNeedPro) {
+      const noNeedPlus = !valueEnum && !valueType && !children
+      if (noNeedPlus) {
         return {
           index: columnsIndex,
           ...columnProps,
         }
       }
-      // const config = action.columnsMap[columnKey] || {
-      //   fixed: columnProps.fixed,
-      // }
 
+      const fixed = columnsMap[columnKey]?.fixed ?? columnProps.fixed
       const tempColumns = {
         index: columnsIndex,
         key: columnKey,
@@ -95,6 +94,7 @@ export function genPlusColumnToColumn(
         //     : filters,
         // onFilter: genOnFilter(),
         // fixed: config.fixed,
+        fixed,
         width: columnProps.width || (columnProps.fixed ? 200 : undefined),
         children: (columnProps as PlusColumn).children
           ? genPlusColumnToColumn(

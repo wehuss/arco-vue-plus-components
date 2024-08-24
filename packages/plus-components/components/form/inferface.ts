@@ -1,11 +1,11 @@
-import { FormItemInstance } from '@arco-design/web-vue'
-import { RenderFunction, VNode } from 'vue'
+import { ButtonProps, FormItemInstance } from '@arco-design/web-vue'
+import { CSSProperties, RenderFunction, VNode } from 'vue'
 import {
   FieldValueType,
   FieldValueEnumType,
   FieldValueTypeWithFieldProps,
   PlusFieldProps,
-} from '../field'
+} from '@/components/field'
 import { TimePickerProps } from '@arco-design/web-vue/es/time-picker/interface'
 import { RangePickerProps } from '@arco-design/web-vue/es/date-picker/interface'
 
@@ -135,7 +135,10 @@ export type DatEntryComponentProps = PlusFieldProps & {
   allowClear: true
 }
 
-export type PlusFormItem = Omit<FormItemInstance['$props'], 'label'> & {
+export type PlusFormItem<T extends FieldValueType = any> = Omit<
+  FormItemInstance['$props'],
+  'label'
+> & {
   label?: string | (() => VNode) | RenderFunction
   render?: (props: DatEntryComponentProps) => VNode
   defaultValue?: any
@@ -143,4 +146,40 @@ export type PlusFormItem = Omit<FormItemInstance['$props'], 'label'> & {
   order?: number
   valueType?: FieldValueType
   valueEnum?: FieldValueEnumType
+  fieldProps?: Partial<FieldValueTypeWithFieldProps[T]> & {
+    style?: CSSProperties
+    class?: string | string[]
+  }
 }
+
+// /** @name 用于配置操作栏 */
+// export type SearchConfig = {
+//   /** @name 重置按钮的文本 */
+//   resetText?: VNode
+//   /** @name 提交按钮的文本 */
+//   submitText?: VNode
+// }
+
+// export type SubmitterProps<T = Record<string, any>> = {
+//   /** @name 提交方法 */
+//   onSubmit?: (value?: T) => void
+//   /** @name 重置方法 */
+//   onReset?: (value?: T) => void
+//   /** @name 搜索的配置，一般用来配置文本 */
+//   searchConfig?: SearchConfig
+//   /** @name 提交按钮的 props */
+//   submitButtonProps?: false | (ButtonProps & { preventDefault?: boolean })
+//   /** @name 重置按钮的 props */
+//   resetButtonProps?: false | (ButtonProps & { preventDefault?: boolean })
+//   /** @name 自定义操作的渲染 */
+//   render?:
+//     | ((
+//         props: SubmitterProps &
+//           T & {
+//             submit: () => void
+//             reset: () => void
+//           },
+//         dom: VNode[]
+//       ) => VNode[] | VNode | false)
+//     | false
+// }
