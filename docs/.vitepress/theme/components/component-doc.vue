@@ -1,5 +1,5 @@
 <template>
-  <div class="component-doc">
+  <div class="component-doc vp-raw">
     <div class="component-doc-content">
       <slot />
     </div>
